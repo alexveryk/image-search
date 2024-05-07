@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Component } from "react";
+import { Searchbar } from "./components/Searchbar/Searchbar";
+import "./App.css";
+import { Loader } from "./components/Loader/Loader";
+import { getImage } from "./API/api";
 
-function App() {
-  const [count, setCount] = useState(0)
+export class App extends Component {
+  state = {
+    images: [],
+    page: 1,
+    isLoading: false,
+    error: null,
+    imageName: "",
+  };
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+  async componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.page !== this.state.page ||
+      prevState.imageName !== this.state.imageName
+    ) {
+      this.setState({ isLoading: true });
+      try {
+        const { page, imageName } = this.state;
+        const fetchImage = await getImage(imageName, page);
+        if (!fetchData.total) {
+          console.log('No images found ');
+          };
+        }
+      } catch (error) {
+      this.setState({ error });
+      } finally { 
+         this.setState({ isLoading: false });
+    }
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Searchbar />
+        {this.state.isLoading && <Loader />}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    );
+  }
 }
-
-export default App
