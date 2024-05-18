@@ -13,25 +13,25 @@ export class App extends Component {
     imageName: "",
   };
 
-  async componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.page !== this.state.page ||
-      prevState.imageName !== this.state.imageName
-    ) {
-      this.setState({ isLoading: true });
-      try {
-        const { page, imageName } = this.state;
-        const fetchImage = await getImage(imageName, page);
-        if (!fetchData.total) {
-          console.log('No images found ');
-          };
-        }
-      } catch (error) {
-      this.setState({ error });
-      } finally { 
-         this.setState({ isLoading: false });
-    }
-  }
+  // async componentDidUpdate(prevProps, prevState) {
+  //   if (
+  //     prevState.page !== this.state.page ||
+  //     prevState.imageName !== this.state.imageName
+  //   ) {
+  //     this.setState({ isLoading: true });
+  //     try {
+  //       const { page, imageName } = this.state;
+  //       const fetchImage = await getImage(imageName, page);
+  //       if (!fetchData.total) {
+  //         console.log('No images found ');
+  //         };
+  //       }
+  //     } catch (error) {
+  //     this.setState({ error });
+  //     } finally { 
+  //        this.setState({ isLoading: false });
+  //   }
+  // }
 
   render() {
     return (
