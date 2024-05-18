@@ -13,30 +13,38 @@ export class App extends Component {
     imageName: "",
   };
 
-  // async componentDidUpdate(prevProps, prevState) {
-  //   if (
-  //     prevState.page !== this.state.page ||
-  //     prevState.imageName !== this.state.imageName
-  //   ) {
-  //     this.setState({ isLoading: true });
-  //     try {
-  //       const { page, imageName } = this.state;
-  //       const fetchImage = await getImage(imageName, page);
-  //       if (!fetchData.total) {
-  //         console.log('No images found ');
-  //         };
-  //       }
-  //     } catch (error) {
-  //     this.setState({ error });
-  //     } finally { 
-  //        this.setState({ isLoading: false });
-  //   }
-  // }
+  async componentDidUpdate(prevProps, prevState) {
+    if(prevState.imageName !== this.state.imageName || prevState.page !== this.state.page){
+console.log("Щось змінилось , пошукове поле або номер сторінки ")
+try {
+  this.state.isLoading = true;
+const responce = await getImage(this.state.imageName, this.state.page);
+console.log(responce.data.hits);
+this.setState({images: responce.data.hits})
+console.log('STATE: ',this.state)
+  
+} catch (error) {
+  console.log(error)
+} finally {
+  this.state.isLoading = false;
+
+}
+    }
+  }
+
+  handleChange = (evt) => {
+    this.setState({ imageName: evt.target.value });
+  }
+
+  handleFormReset = () => {
+    this.setState({imageName: ""})
+  }
+
 
   render() {
     return (
       <div className="App">
-        <Searchbar />
+        <Searchbar handleChange={this.handleChange} imageName={this.state.imageName} resetForm={this.handleFormReset}/>
         {this.state.isLoading && <Loader />}
       </div>
     );
