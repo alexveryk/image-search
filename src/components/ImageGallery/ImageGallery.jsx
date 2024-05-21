@@ -1,8 +1,16 @@
 import { Component } from "react";
 import "./ImageGallery.css";
+import { ImageGalleryItem } from "../ImageGalleryItem/ImageGalleryItem";
 
 export class ImageGallery extends Component {
   render() {
-    return <ul className="imageGallery">{/* Набір li із зображеннями  */}</ul>;
+    const { images } = this.props;
+    return (
+      <ul className="imageGallery">
+        {images.map((image) => (
+          <ImageGalleryItem key={image.id} image={image} />
+        ))}
+      </ul>
+    );
   }
 }

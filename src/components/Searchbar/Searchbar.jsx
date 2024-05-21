@@ -2,16 +2,21 @@ import { Component } from "react";
 import "./searchbar.css";
 
 export class Searchbar extends Component {
-  
+  state = {
+    searchValue: "",
+  };
+
   handleSubmit = (evt) => {
     evt.preventDefault();
-    console.log(this.props.imageName);
-    this.props.resetForm() 
-    
-  } 
+    this.props.imageName(this.state.searchValue);
+    this.setState({ searchValue: "" });
+  };
+
+  handleChange = (evt) => {
+    this.setState({ searchValue: evt.target.value });
+  };
 
   render() {
-   const {handleChange, imageName} = this.props
     return (
       <header className="searchbar">
         <form className="searchForm" onSubmit={this.handleSubmit}>
@@ -25,8 +30,8 @@ export class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            value={imageName}
-            onChange={handleChange}
+            value={this.state.searchValue}
+            onChange={this.handleChange}
           />
         </form>
       </header>

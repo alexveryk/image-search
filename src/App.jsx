@@ -3,6 +3,8 @@ import { Searchbar } from "./components/Searchbar/Searchbar";
 import "./App.css";
 import { Loader } from "./components/Loader/Loader";
 import { getImage } from "./API/api";
+import { ImageGallery } from "./components/ImageGallery/ImageGallery";
+import { Button } from "./components/Button/Button";
 
 export class App extends Component {
   state = {
@@ -11,41 +13,51 @@ export class App extends Component {
     isLoading: false,
     error: null,
     imageName: "",
+    totalHits: 0,
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    if(prevState.imageName !== this.state.imageName || prevState.page !== this.state.page){
-console.log("Щось змінилось , пошукове поле або номер сторінки ")
-try {
-  this.state.isLoading = true;
-const responce = await getImage(this.state.imageName, this.state.page);
-console.log(responce.data.hits);
-this.setState({images: responce.data.hits})
-console.log('STATE: ',this.state)
-  
-} catch (error) {
-  console.log(error)
-} finally {
-  this.state.isLoading = false;
-
-}
+    if (
+      prevState.imageName !== this.state.imageName ||
+      prevState.page !== this.state.page
+    ) {
+      try {
+        this.setState({ isLoading: true });
+        const responce = await getImage(this.state.imageName, this.state.page);
+        console.log(responce);
+        this.setState((prevState) => ({
+          images: [...prevState.images, ...responce.data.hits],
+          totalHits: responce.data.totalHits,
+        }));
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.setState({ isLoading: false });
+      }
     }
   }
 
-  handleChange = (evt) => {
-    this.setState({ imageName: evt.target.value });
-  }
+  setImageName = (ImageName) => {
+    this.setState({ imageName: ImageName, page: 1, images: [] });
+  };
 
-  handleFormReset = () => {
-    this.setState({imageName: ""})
-  }
-
+  handlePageChange = () => {
+    this.setState((prevState) => ({ page: prevState.page + 1 }));
+  };
 
   render() {
     return (
       <div className="App">
-        <Searchbar handleChange={this.handleChange} imageName={this.state.imageName} resetForm={this.handleFormReset}/>
-        {this.state.isLoading && <Loader />}
+        <Searchbar imageName={this.setImageName} />
+        {this.state.images.length > 0 ? (
+          <ImageGallery images={this.state.images} />
+        ) : (
+          <p>Newer images find</p>
+        )}
+        {this.state.isLoading && <Loader />}{" "}
+        {this.state.images.length < this.state.totalHits && (
+          <Button page={this.handlePageChange} />
+        )}
       </div>
     );
   }
