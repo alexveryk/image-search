@@ -52,7 +52,9 @@ export class App extends Component {
         {this.state.images.length > 0 ? (
           <ImageGallery images={this.state.images} />
         ) : (
-          <p>Newer images find</p>
+          <p className="default-text">
+            There are currently no images to display.
+          </p>
         )}
         {this.state.isLoading && <Loader />}{" "}
         {this.state.images.length < this.state.totalHits && (

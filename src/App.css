@@ -4,3 +4,10 @@
   grid-gap: 16px;
   padding-bottom: 24px;
 }
+
+.default-text {
+  display: block;
+  min-width: 320px;
+  margin: 0 auto;
+  font-size: 1.5em;
+}
