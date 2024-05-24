@@ -8,7 +8,7 @@ export class ImageGallery extends Component {
     return (
       <ul className="imageGallery">
         {images.map((image) => (
-          <ImageGalleryItem key={image.id} image={image} />
+          <ImageGalleryItem key={image.id} image={image} images={images} />
         ))}
       </ul>
     );
