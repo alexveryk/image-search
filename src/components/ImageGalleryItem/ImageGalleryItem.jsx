@@ -8,17 +8,29 @@ export class ImageGalleryItem extends Component {
     largeImageURL: "",
   };
 
-  toogleModal = () => {
+  addScrollLock = () => {
+    document.documentElement.style.overflow = 'hidden';
+  };
+
+  removeScrollLock = () => {
+    document.documentElement.style.overflow = '';
+  };
+
+  toggleModal = () => {
     this.setState(({ isModalOpen }) => ({ isModalOpen: !isModalOpen }));
-    console.log(this.state.isModalOpen);
   };
 
   handleModalOpen = (evt) => {
-    this.toogleModal();
+    this.addScrollLock();
     this.setState({
       largeImageURL: evt.target.dataset.largeimageurl,
       isModalOpen: true,
     });
+  };
+
+  handleModalClose = () => {
+    this.removeScrollLock();
+    this.setState({ isModalOpen: false });
   };
 
   render() {
@@ -36,7 +48,7 @@ export class ImageGalleryItem extends Component {
         {this.state.isModalOpen && (
           <Modal
             largeImageURL={this.state.largeImageURL}
-            onClose={this.toogleModal}
+            onClose={this.handleModalClose}
           />
         )}
       </>

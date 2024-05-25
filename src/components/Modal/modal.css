@@ -12,6 +12,14 @@
 }
 
 .modal {
-  max-width: calc(100vw - 48px);
+  position: relative;
+  max-width: calc(60vw);
   max-height: calc(100vh - 24px);
+}
+
+.button-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+
 }
